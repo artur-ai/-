@@ -6,7 +6,7 @@ lab 4
 */
 
 #include <iostream>
-#include <stdio.h>
+using namespace std;
 
 // Опис Змінних 
 
@@ -18,15 +18,20 @@ int main () {
 
 
     // Опис вказівників
-    unsigned short *pus = &us;
-    int *pi = &i;
-    float *pf = &f;
-    double *pd = &d;
+    unsigned short *pus =  nullptr;
+    int *pi =  nullptr;
+    float *pf =  nullptr;
+    double *pd =  nullptr;
 
 
      // Нетипізований вказівник (void*)
-     void *pv = &pus; // Вказує на вказівник на unsigned short
+     void *pv =  nullptr;
 
+     // 4. Ініціювання вказівних змінних адресами
+    pus = &us;
+    pi = &i;
+    pf = &f;
+    pd = &d;
 
       // Ініціалізація значень через розіменування
       *pus = 200;
@@ -35,13 +40,16 @@ int main () {
       *pd = 2.7123;
 
       // Визначення розміру змінних
-      printf("Size of unsigned short: %zu bytes/n", sizeof (us));
-      printf("Size of int: %zu bytes/n",sizeof (i));
-      printf("Size of float: %zu bytes/n", sizeof (f));
-      printf("Size of double: %zu bytes/n", sizeof (d));
+      cout << "Size of unsigned short: " <<sizeof(us) << "bytes" <<endl;
+      cout << "Size of int: " << sizeof(i) << "bytes" << endl; 
+      cout << "Size of float: " << sizeof(f) << "bytes" << endl;
+      cout << "Size of double: " << sizeof(d) << "bytes" << endl;
+      cout << "Size of pointer: " << sizeof(pus) << " bytes" << endl;
+
 
       // Використання нетипізованого вказівника (з явним приведенням типів)
-      printf("Value of us through void pointer: %d/n", *(unsigned short*)pv );
+     pv = pus;
+    cout << "Value of us through void pointer: " << *(unsigned short*)pv << endl;
 
       return 0;
 }
