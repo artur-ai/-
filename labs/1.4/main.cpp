@@ -47,7 +47,7 @@ int main () {
       cout << "Size of pointer: " << sizeof(pus) << " bytes" << endl;
 
 
-      // Використання нетипізованого вказівника (з явним приведенням типів)
+      //  Ініціювання нетипізованої вказівної змінної адресами типізованих вказівників
      pv = pus;
     cout << "Value of us through void pointer: " << *(unsigned short*)pv << endl;
 
