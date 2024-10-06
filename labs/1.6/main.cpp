@@ -29,51 +29,51 @@ int main() {
     cout << "symbol7: " << symbol7 << endl;
     cout <<  "symbol8: " << symbol8 << endl;
 
-    return 0;
-    }
+    
+    
 
 
-int main() {
-        int intVar = 3841;
-        float floatVar = 954.67;
-        unsigned short ushortVar = 6429;
+
+     int intVar = 3841;
+     float floatVar = 954.67;
+     unsigned short ushortVar = 6429;
 
 
-        double doubleVar;
-        int intVar2;
-        char charVar;
+     double doubleVar;
+     int intVar2;
+     char charVar;
 
-        // Неявнее приведення
-        doubleVar = intVar;
-        intVar2 = floatVar;
-        charVar = ushortVar;
+     // Неявнее приведення
+     doubleVar = intVar;
+     intVar2 = floatVar;
+     charVar = ushortVar;
 
-        cout << "Неявне приведення" << endl;
-        cout << "doubleVar = " << doubleVar << endl;
-        cout << "intVar2 = " << intVar2 << endl;
-        cout << "charVar = " << charVar << endl;
+     cout << "Неявне приведення" << endl;
+     cout << "doubleVar = " << doubleVar << endl;
+     cout << "intVar2 = " << intVar2 << endl;
+     cout << "charVar = " << charVar << endl;
 
-        //Явне приведення
-        doubleVar = (double)ushortVar;
-        intVar2 = (int)floatVar;
-        charVar = (char)intVar;
+     //Явне приведення
+     doubleVar = (double)ushortVar;
+     intVar2 = (int)floatVar;
+     charVar = (char)intVar;
 
-        cout << "Явне приведення:" << endl;
-    cout << "doubleVar = " << doubleVar << endl;
-    cout << "intVar2 = " << intVar2 << endl;
-    cout << "charVar = " << charVar << endl;
+     cout << "Явне приведення:" << endl;
+     cout << "doubleVar = " << doubleVar << endl;
+     cout << "intVar2 = " << intVar2 << endl;
+     cout << "charVar = " << charVar << endl;
 
-    // Обхід суворої типізації (C-style cast)
-    doubleVar = (double)intVar2;
-    intVar2 = (int)doubleVar;
-    charVar = (char)intVar2;
+     // Обхід суворої типізації (C-style cast)
+     doubleVar = (double)intVar2;
+     intVar2 = (int)doubleVar;
+     charVar = (char)intVar2;
 
-    cout << "C-style cast:" << endl;
-    cout << "doubleVar = " << doubleVar << endl;
-    cout << "intVar2 = " << intVar2 << endl;
-    cout << "charVar = " << charVar << endl;
+     cout << "C-style cast:" << endl;
+     cout << "doubleVar = " << doubleVar << endl;
+     cout << "intVar2 = " << intVar2 << endl;
+     cout << "charVar = " << charVar << endl;
 
-    return 0;
+     return 0;
 }
 
 
