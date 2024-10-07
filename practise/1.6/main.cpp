@@ -1,76 +1,80 @@
 #include <iostream>
-#include <cstdlib>  // Для генерації випадкових чисел
-#include <ctime>    // Для ініціалізації рандомізації
-
+#include <cstdlib>
+#include <ctime>
+#include <fstream>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
-// Функція для перевірки, чи повинна бути іграшка на місці
-bool isToy() {
-    return rand() % 5 == 0; // 20% ймовірність, що буде іграшка
+string colorize(char c, const string& colorCode) {
+    return "\033[" + colorCode + "m" + c + "\033[0m";
 }
 
-// Функція для отримання символу іграшки
-char getToy() {
-    char toys[] = {'@', '$', '%', '#'};
-    return toys[rand() % 4]; // Випадковий символ іграшки
+char getRandomToy() {
+    string toys = "@$%#*";
+    return toys[rand() % toys.size()];
 }
 
-// Функція для виводу ялинки
-void drawTree(int n, bool toggle) {
-    int maxWidth = n * 2 + 1;  // Максимальна ширина ялинки
+void drawTree(int n, ofstream &outfile, bool garlandOn, const string& colorCode) {
+    srand(time(0));
 
-    for (int level = 1; level <= n; ++level) {
-        for (int row = 1; row <= level + 1; ++row) {
-            int stars = row * 2 - 1;  // Кількість зірочок у рядку
-            int spaces = (maxWidth - stars) / 2;
+    // Очищення консолі
+    #ifdef _WIN32
+    system("cls");
+    #else
+    system("clear");
+    #endif
 
-            // Виведення пробілів перед зірочками
-            for (int s = 0; s < spaces; ++s)
-                cout << " ";
-
-            // Виведення рядка з зірочок та іграшок
-            for (int st = 0; st < stars; ++st) {
-                if (isToy()) {
-                    // Якщо toggle включений, іграшка буде з кольором
-                    if (toggle) {
-                        cout << "\033[1;31m" << getToy() << "\033[0m"; // Червоний колір
-                    } else {
-                        cout << "\033[1;32m" << getToy() << "\033[0m"; // Зелений колір
-                    }
-                } else {
-                    cout << "*";  // Виведення зірочки
-                }
-            }
-
-            cout << endl;
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= n - i; ++j) {
+            cout << " ";
+            outfile << " ";
         }
+        for (int j = 1; j <= 2 * i - 1; ++j) {
+            if (rand() % 5 == 0 && garlandOn) {
+                cout << colorize(getRandomToy(), colorCode);
+                outfile << colorize(getRandomToy(), colorCode);
+            } else {
+                cout << "*";
+                outfile << "*";
+            }
+        }
+        cout << endl;
+        outfile << endl;
     }
 
-    // Виведення стовбура ялинки
-    for (int i = 0; i < 2; ++i) {
-        for (int s = 0; s < (maxWidth - 3) / 2; ++s)
+    // Стовбур
+    for (int i = 1; i <= n / 2; ++i) {
+        for (int j = 1; j <= n - 2; ++j) {
             cout << " ";
+            outfile << " ";
+        }
         cout << "###" << endl;
+        outfile << "###" << endl;
     }
 }
 
 int main() {
-    srand(time(0));  // Ініціалізуємо рандомізацію
+    int n, numFlashes;
+    string color = "32"; // Зелений колір (можна змінити)
 
-    int n;
     cout << "Введіть кількість рівнів ялинки: ";
     cin >> n;
 
-    bool toggle = true;  // Для чергування кольорів гірлянд
+    cout << "Введіть кількість мигань гірлянди: ";
+    cin >> numFlashes;
 
-    // Симуляція миготіння ялинки
-    for (int i = 0; i < 10; ++i) {
-        system("cls");  // Очищення екрану для оновлення ялинки
-        drawTree(n, toggle);  // Малюємо ялинку з відповідним кольором
-        toggle = !toggle;  // Змінюємо стан миготіння
-       
+    // ... (перевірка вводу)
+
+    ofstream outfile("yalynka.txt");
+
+    for (int i = 0; i < numFlashes; ++i) {
+        bool garlandOn = (i % 2 == 0);
+        drawTree(n, outfile, garlandOn, color);
+        this_thread::sleep_for(chrono::milliseconds(500));
     }
 
+    outfile.close();
     return 0;
 }
