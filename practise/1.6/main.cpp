@@ -1,84 +1,76 @@
-/*
-Name: Maiboroda Artur
-Group: 121
-prac 1.6
-*/
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
-#include <thread> // Для пауз
-#include <chrono> // Для задержек
+#include <cstdlib>  // Для генерації випадкових чисел
+#include <ctime>    // Для ініціалізації рандомізації
+
 
 using namespace std;
 
-char getRandomToy() {
-    char toys[] = {'@', '$', '%', '#'}; // Варианты игрушек
-    return toys[rand() % 4];            // Возвращаем случайную игрушку
+// Функція для перевірки, чи повинна бути іграшка на місці
+bool isToy() {
+    return rand() % 5 == 0; // 20% ймовірність, що буде іграшка
 }
 
-void drawTree(int n, ofstream &outfile, bool garlandOn) {
-    srand(time(0)); // Инициализация генератора случайных чисел
+// Функція для отримання символу іграшки
+char getToy() {
+    char toys[] = {'@', '$', '%', '#'};
+    return toys[rand() % 4]; // Випадковий символ іграшки
+}
 
-    // Рисуем уровни ялинки
-    for (int i = 1; i <= n; ++i) {
-        // Отступы слева для формирования треугольной формы
-        for (int j = 1; j <= n - i; ++j) {
-            cout << " ";
-            outfile << " ";
-        }
-        // Звезды и игрушки
-        for (int j = 1; j <= 2 * i - 1; ++j) {
-            if (rand() % 5 == 0) { // 20% шанс для появления игрушки
-                char toy = getRandomToy();
-                if (garlandOn) {
-                    cout << toy;
-                    outfile << toy;
+// Функція для виводу ялинки
+void drawTree(int n, bool toggle) {
+    int maxWidth = n * 2 + 1;  // Максимальна ширина ялинки
+
+    for (int level = 1; level <= n; ++level) {
+        for (int row = 1; row <= level + 1; ++row) {
+            int stars = row * 2 - 1;  // Кількість зірочок у рядку
+            int spaces = (maxWidth - stars) / 2;
+
+            // Виведення пробілів перед зірочками
+            for (int s = 0; s < spaces; ++s)
+                cout << " ";
+
+            // Виведення рядка з зірочок та іграшок
+            for (int st = 0; st < stars; ++st) {
+                if (isToy()) {
+                    // Якщо toggle включений, іграшка буде з кольором
+                    if (toggle) {
+                        cout << "\033[1;31m" << getToy() << "\033[0m"; // Червоний колір
+                    } else {
+                        cout << "\033[1;32m" << getToy() << "\033[0m"; // Зелений колір
+                    }
                 } else {
-                    cout << "*";
-                    outfile << "*";
+                    cout << "*";  // Виведення зірочки
                 }
-            } else {
-                cout << "*";
-                outfile << "*";
             }
+
+            cout << endl;
         }
-        cout << endl;
-        outfile << endl;
     }
 
-    // Рисуем ствол ялинки
-    for (int i = 1; i <= n / 2; ++i) {
-        for (int j = 1; j <= n - 2; ++j) {
+    // Виведення стовбура ялинки
+    for (int i = 0; i < 2; ++i) {
+        for (int s = 0; s < (maxWidth - 3) / 2; ++s)
             cout << " ";
-            outfile << " ";
-        }
         cout << "###" << endl;
-        outfile << "###" << endl;
     }
 }
 
 int main() {
+    srand(time(0));  // Ініціалізуємо рандомізацію
+
     int n;
-    cout << "Введите количество уровней ялинки: ";
+    cout << "Введіть кількість рівнів ялинки: ";
     cin >> n;
 
-    // Открываем файл для записи
-    ofstream outfile("yalynka.txt");
+    bool toggle = true;  // Для чергування кольорів гірлянд
 
-    // Основной цикл для мигания гірлянды
-    for (int i = 0; i < 10; ++i) { // 10 итераций мигания гірлянды
-        system("clear"); // Очищаем консоль (на Windows используйте "cls")
-        bool garlandOn = (i % 2 == 0); // Переключаем состояние гирлянды (вкл/выкл)
-
-        drawTree(n, outfile, garlandOn);
-
-        // Пауза для "мигания" гирлянды
-        this_thread::sleep_for(chrono::milliseconds(500)); // 0.5 секунды паузы
+    // Симуляція миготіння ялинки
+    for (int i = 0; i < 10; ++i) {
+        system("cls");  // Очищення екрану для оновлення ялинки
+        drawTree(n, toggle);  // Малюємо ялинку з відповідним кольором
+        toggle = !toggle;  // Змінюємо стан миготіння
+       
     }
-
-    // Закрываем файл
-    outfile.close();
 
     return 0;
 }
