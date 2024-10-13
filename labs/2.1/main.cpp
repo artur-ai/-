@@ -1,18 +1,9 @@
 #include <iostream>
-#include <windows.h>
-
 using namespace std;
 
 
 
 int main() {
-
-
-    SetConsoleCP(1251); // Кодова сторінка для вводу
-    SetConsoleOutputCP(1251); // Кодова сторінка для виводу
-    std::cout << "Привіт, світе!" << std::endl;
-  
-
 
     double num1, num2;
     char operation;
